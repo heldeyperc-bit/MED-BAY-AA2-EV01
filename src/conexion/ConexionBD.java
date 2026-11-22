@@ -7,29 +7,17 @@ import java.sql.SQLException;
 public class ConexionBD {
 
     private static final String URL = "jdbc:mysql://localhost:3306/med_bay";
-    private static final String USUARIO = "root";
-    private static final String PASSWORD = "123456";
 
-    public static Connection conectar() {
+    public static Connection conectar() throws SQLException {
+        String usuario = System.getenv("MEDBAY_DB_USER");
+        String clave = System.getenv("MEDBAY_DB_PASSWORD");
 
-        try {
-
-            Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-
-            System.out.println("================================");
-            System.out.println("Conexión exitosa a MED-BAY");
-            System.out.println("================================");
-
-            return conexion;
-
-        } catch (SQLException e) {
-
-            System.out.println("Error al conectar con la base de datos");
-            e.printStackTrace();
-
-            return null;
+        if (usuario == null || usuario.isBlank() || clave == null) {
+            throw new SQLException(
+                "Configura MEDBAY_DB_USER y MEDBAY_DB_PASSWORD antes de iniciar MED-BAY."
+            );
         }
 
+        return DriverManager.getConnection(URL, usuario, clave);
     }
-
 }
