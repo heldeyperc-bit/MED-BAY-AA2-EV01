@@ -6,7 +6,10 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/med_bay";
+    private static final String URL = System.getenv().getOrDefault(
+        "MEDBAY_DB_URL",
+        "jdbc:mysql://localhost:3306/med_bay"
+    );
 
     public static Connection conectar() throws SQLException {
         String usuario = System.getenv("MEDBAY_DB_USER");
